@@ -3,5 +3,5 @@
 
 function changeVerifyCode(img)
 {
-	img.src="../Kaptcha";
+	img.src="../Kaptcha?"+Math.floor(Math.random()*100);
 }

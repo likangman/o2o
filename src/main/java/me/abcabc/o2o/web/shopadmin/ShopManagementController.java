@@ -77,95 +77,93 @@ public class ShopManagementController {
 	@RequestMapping(value="/registershop")
 	@ResponseBody
 	public Map<String, Object> registerShop(HttpServletRequest request)
-	//public String registerShop(HttpServletRequest request)
 	{
 		Map<String, Object> modelMap = new HashMap<String,Object>();
 		
 		//进行验证码正确性验证
-		modelMap.put("success",true);
-		modelMap.put("errMsg","nicoals1");
-		return modelMap;
-//		if(!CodeUtil.checkVerifyCode(request))
-//		{
-//			modelMap.put("success",false);
-//			modelMap.put("errMsg","输入了错误的验证码");
-//			return modelMap;
-//		}
-//		//1.接受并转化相应的参数，包括店铺信息以及图片信息
-//		String shopStr = HttpServletRequestUtil.getString(request,"shopStr");
-//		ObjectMapper mapper = new ObjectMapper();
-//		Shop shop = null;
-//		try {
-//			shop = mapper.readValue(shopStr,Shop.class);
-//		}catch (Exception e) {
-//			modelMap.put("success",false);
-//			modelMap.put("errMsg",e.getMessage());
-//			System.out.println(e.getMessage());
-//			return modelMap;
-//		}    
-//		CommonsMultipartFile shopImg = null;
-//		CommonsMultipartResolver commonsMultipartResolver
-//		=new CommonsMultipartResolver(request.getSession().getServletContext());
-//		//判断是否包含文件流
-//		if(commonsMultipartResolver.isMultipart(request))
-//		{
-//			//强制转换，提取文件流
-//			MultipartHttpServletRequest multipartHttpServletRequest
-//			=(MultipartHttpServletRequest)request;
-//			shopImg=(CommonsMultipartFile)multipartHttpServletRequest.getFile("shopImg");
-//
-//		}else
-//		{
-//			modelMap.put("success", false);
-//			modelMap.put("errMsg", "上传图片不能为空");
-//			return modelMap;
-//		}
-//		//2.注册店铺
-//		if(shop!=null&&shopImg!=null)
-//		{
-//			PersonInfo owner = new PersonInfo();
-//			owner.setUserId(1L);
-//			shop.setOwner(owner);
-////			File shopImgFile = new File(PathUtil.getImgBasePath()+ImageUtil.getRandomFileName());
-////			try {
-////				shopImgFile.createNewFile();
-////			}catch(IOException e)
-////			{
-////				modelMap.put("success",false);
-////				modelMap.put("errMsg",e.getMessage());
-////				return modelMap;
-////			}
-////			try {
-////				InputStreamToFile(shopImg.getInputStream(),shopImgFile);
-////			} catch (IOException e) {
-////				modelMap.put("success",false);
-////				modelMap.put("errMsg",e.getMessage());
-////				return modelMap;
-////			}
-//			//进行店铺注册
-//			ShopExcution sException;
+
+		System.out.println("搞笑的么");
+		if(!CodeUtil.checkVerifyCode(request))
+		{
+			modelMap.put("success",false);
+			modelMap.put("errMsg","输入了错误的验证码");
+			return modelMap;
+		}
+		//1.接受并转化相应的参数，包括店铺信息以及图片信息
+		String shopStr = HttpServletRequestUtil.getString(request,"shopStr");
+		ObjectMapper mapper = new ObjectMapper();
+		Shop shop = null;
+		try {
+			shop = mapper.readValue(shopStr,Shop.class);
+		}catch (Exception e) {
+			modelMap.put("success",false);
+			modelMap.put("errMsg",e.getMessage());
+			System.out.println(e.getMessage());
+			return modelMap;
+		}    
+		CommonsMultipartFile shopImg = null;
+		CommonsMultipartResolver commonsMultipartResolver
+		=new CommonsMultipartResolver(request.getSession().getServletContext());
+		//判断是否包含文件流
+		if(commonsMultipartResolver.isMultipart(request))
+		{
+			//强制转换，提取文件流
+			MultipartHttpServletRequest multipartHttpServletRequest
+			=(MultipartHttpServletRequest)request;
+			shopImg=(CommonsMultipartFile)multipartHttpServletRequest.getFile("shopImg");
+
+		}else
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "上传图片不能为空");
+			return modelMap;
+		}
+		//2.注册店铺
+		if(shop!=null&&shopImg!=null)
+		{
+			PersonInfo owner = new PersonInfo();
+			owner.setUserId(1L);
+			shop.setOwner(owner);
+//			File shopImgFile = new File(PathUtil.getImgBasePath()+ImageUtil.getRandomFileName());
 //			try {
-//				sException = shopService.addShop(shop,shopImg.getInputStream(),shopImg.getOriginalFilename());
-//				
-//				if(sException.getState()==ShopStateEnum.CHECK.getState())
-//				{
-//					modelMap.put("success",true);
-//				}else
-//				{
-//					modelMap.put("success",false);
-//					modelMap.put("errMsg",sException.getStateInfo());
-//				}
-//			} catch (Exception e) {
+//				shopImgFile.createNewFile();
+//			}catch(IOException e)
+//			{
 //				modelMap.put("success",false);
 //				modelMap.put("errMsg",e.getMessage());
+//				return modelMap;
 //			}
-//			return modelMap;
-//		}else
-//		{
-//			modelMap.put("success", false);
-//			modelMap.put("errMsg", "请输入店铺信息");
-//			return modelMap;
-//		}
+//			try {
+//				InputStreamToFile(shopImg.getInputStream(),shopImgFile);
+//			} catch (IOException e) {
+//				modelMap.put("success",false);
+//				modelMap.put("errMsg",e.getMessage());
+//				return modelMap;
+//			}
+			//进行店铺注册
+			ShopExcution sException;
+			try {
+				sException = shopService.addShop(shop,shopImg.getInputStream(),shopImg.getOriginalFilename());
+				
+				if(sException.getState()==ShopStateEnum.CHECK.getState())
+				{
+					modelMap.put("success",true);
+				}else
+				{
+					modelMap.put("success",false);
+					modelMap.put("errMsg",sException.getStateInfo());
+				}
+			} catch (Exception e) {
+				modelMap.put("success",false);
+				modelMap.put("errMsg",e.getMessage());
+			}
+			return modelMap;
+		}else
+		{
+			modelMap.put("success", false);
+			modelMap.put("errMsg", "请输入店铺信息");
+			return modelMap;
+		}
 	}
 
 //	private void InputStreamToFile(InputStream ins, File file) {

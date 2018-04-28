@@ -13,11 +13,11 @@ $(function(){
 				var tempHtml = '';
 				var tempAreaHtml='';
 				data.shopCategoryList.map(function(item,index){
-					tempHtml+='<option data-id="'+item.shopCategoryId
+					tempHtml+='<option id="'+item.shopCategoryId
 					+'">'+item.shopCategoryName+'</option>';
 				});
 				data.areaList.map(function(item,index){
-					tempAreaHtml+='<option data-id="'+
+					tempAreaHtml+='<option id="'+
 					item.areaId+'">'+item.areaName+'</option>';			
 					});
 				$('#shop-category').html(tempHtml);
@@ -43,27 +43,36 @@ $(function(){
 					}).data('id')
 			};
 			var shopImg = $('#shop-img')[0].files[0];
-			var formData = new FormData();
-			formData.append('shopImg',shopImg);
-			formData.append('shopStr',JSON.stringify(shop));
 			var verifyCodeActual = $('#j_captcha').val();
 			if(!verifyCodeActual)
 			{
 				$.toast('请输入验证码！');
 				return ;
 			}
+			
+			
+			var formData = new FormData();
+			formData.append('shopImg',shopImg);
+			formData.append('shopStr',JSON.stringify(shop));			
 			formData.append('verifyCodeActual',verifyCodeActual);
+
 			$.ajax({
 				url:registerShopUrl,
 				type:'POST',
-				data:{name:'adv'},
+				data:formData,
+				contentType:false,
+				processData:false,
+				cache:false,
 				success:function(data){
-					alert(data);
-					
-					alert(data.success);
-					alert(data.errMsg);
-					 
-					$('captcha_img').click();
+					if(data.success)
+					{
+						$.toast("提交上传成功~~^.^~~");
+					}
+					else
+					{
+						$.toast("提交上传失败！！--T_T--"+data.errMsg);
+					}
+					$('#captcha_img').click();
 				}
 			
 			});
