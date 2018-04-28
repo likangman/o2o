@@ -1,0 +1,14 @@
+2018-04-22 15:06:48.761[main]DEBUGm.abcabc.o2o.dao.ShopCategoryDao.queryShopcategory-==>  Preparing: select shop_category_id, shop_category_name, shop_category_img, priority, create_time, last_edit_time, parent_id FROM tb_shop_category ORDER BY priority DESC 
+2018-04-22 15:06:48.823[main]DEBUGm.abcabc.o2o.dao.ShopCategoryDao.queryShopcategory-==> Parameters: 
+2018-04-22 15:06:48.850[main]DEBUGm.abcabc.o2o.dao.ShopCategoryDao.queryShopcategory-<==      Total: 2
+2018-04-22 15:06:48.931[main]DEBUGm.abcabc.o2o.dao.ShopCategoryDao.queryShopcategory-==>  Preparing: select shop_category_id, shop_category_name, shop_category_img, priority, create_time, last_edit_time, parent_id FROM tb_shop_category WHERE parent_id=? ORDER BY priority DESC 
+2018-04-22 15:06:48.932[main]DEBUGm.abcabc.o2o.dao.ShopCategoryDao.queryShopcategory-==> Parameters: 1(Long)
+2018-04-22 15:06:48.935[main]DEBUGm.abcabc.o2o.dao.ShopCategoryDao.queryShopcategory-<==      Total: 1
+2018-04-22 18:17:06.606[main]DEBUGme.abcabc.o2o.dao.ShopDao.insertShop-==>  Preparing: INSERT INTO tb_shop ( owner_id,area_id,shop_category_id, shop_name,shop_desc, shop_addr,phone,shop_img,priority,create_time, enable_status,advice ) values ( ?,?,?, ?,?, ?,?,?,?,?, ?,? ) 
+2018-04-22 18:17:06.782[main]DEBUGme.abcabc.o2o.dao.ShopDao.insertShop-==> Parameters: 1(Long), 1(Integer), 1(Long), ≤‚ ‘µÍ∆Ã3(String), a apple is beautiful(String), tt(String), 18815598680(String), noimage(String), null, 2018-04-22 18:17:06.576(Timestamp), 0(Integer), …Û∫À÷–(String)
+2018-04-22 18:17:06.878[main]DEBUGme.abcabc.o2o.dao.ShopDao.insertShop-<==    Updates: 1
+2018-04-22 18:17:06.887[main]DEBUGme.abcabc.o2o.util.ImageUtil-relativeAddr--9\2018042218170686738.jpg
+2018-04-22 18:17:06.888[main]DEBUGme.abcabc.o2o.util.ImageUtil-dest--F:\images\9\2018042218170686738.jpg
+2018-04-22 18:17:07.434[main]DEBUGme.abcabc.o2o.dao.ShopDao.updateShop-==>  Preparing: update tb_shop SET shop_Name=?, shop_desc=?, shop_addr=?, phone=?, shop_img=?, last_edit_time=?, enable_status=?, advice=?, area_id=?, shop_category_id=? where shop_id=? 
+2018-04-22 18:17:07.435[main]DEBUGme.abcabc.o2o.dao.ShopDao.updateShop-==> Parameters: ≤‚ ‘µÍ∆Ã3(String), a apple is beautiful(String), tt(String), 18815598680(String), 9\2018042218170686738.jpg(String), 2018-04-22 18:17:06.576(Timestamp), 0(Integer), …Û∫À÷–(String), 1(Integer), 1(Long), 9(Long)
+2018-04-22 18:17:07.466[main]DEBUGme.abcabc.o2o.dao.ShopDao.updateShop-<==    Updates: 1
