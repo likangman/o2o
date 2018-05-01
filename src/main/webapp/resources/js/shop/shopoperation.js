@@ -1,8 +1,51 @@
 
 $(function(){
+	//相关url初始化
+	var shopId = getQueryString("shopId=");
+	var isEdit  =shopId?true:false;
 	var initUrl = '/o2o/shopadmin/getshopinitinfo';
 	var registerShopUrl = '/o2o/shopadmin/registershop';
-	getShopInitInfo();
+	var shopInfoUrl = '/o2o/shopadmin/getshopbyid?shopId='+shopId;
+	var editShopUrl = '/o2o/shopadmin/modifyshop';
+	
+	if(!isEdit){getShopInitInfo();}
+	else{getShopInfo(shopId);}
+	
+	
+	
+	//店铺编辑
+	function getShopInfo(shopId)
+	{
+		$.getJSON(shopInfoUrl,function(data){
+			
+			if(data.success)
+			{
+				var shop =data.shop;
+				$('#shop-name').val(shop.shopName);
+				$('#shop-addr').val(shop.shopAddr);
+				$('#shop-phone').val(shop.phone);
+				$('#shop-desc').val(shop.shopDesc);
+				var shopCategory = '<option data-id="'
+					+shop.shopCategory.shopCategoryId+'"selected>'
+					+shop.shopCategory.shopCategoryName+'</option>';
+				var tempAreaHtml = '';
+				data.areaList.map(function(item,index){
+					tempAreaHtml+='<option data-id="'+item.areaId+'">'
+					+item.areaName+'</option>';
+				});
+				$('#shop-category').html(shopCategory);
+				//不能修改
+				$('#shop-category').attr('disabled','disabled');
+				$('#area').html(tempAreaHtml);
+				//默认选择
+				$("#area option[id='"+shop.area.areaId+"']").attr('selected','selected');
+				
+			}
+			
+			
+		});
+		
+	}
 	
 	
 	function getShopInitInfo()
@@ -13,21 +56,23 @@ $(function(){
 				var tempHtml = '';
 				var tempAreaHtml='';
 				data.shopCategoryList.map(function(item,index){
-					tempHtml+='<option id="'+item.shopCategoryId
+					tempHtml+='<option data-id="'+item.shopCategoryId
 					+'">'+item.shopCategoryName+'</option>';
 				});
 				data.areaList.map(function(item,index){
-					tempAreaHtml+='<option id="'+
+					tempAreaHtml+='<option data-id="'+
 					item.areaId+'">'+item.areaName+'</option>';			
 					});
 				$('#shop-category').html(tempHtml);
 				$('#area').html(tempAreaHtml);
 			}
 		});
+	}
 		
 		$('#submit').click(function(){
 			
 			var shop = {};
+			if(isEdit){shop.shopId = shopId;}
 			shop.shopName = $('#shop-name').val();
 			shop.shopAddr = $('#shop-addr').val();
 			shop.phone = $('#shop-phone').val();
@@ -57,7 +102,7 @@ $(function(){
 			formData.append('verifyCodeActual',verifyCodeActual);
 
 			$.ajax({
-				url:registerShopUrl,
+				url:(isEdit?editShopUrl:registerShopUrl),
 				type:'POST',
 				data:formData,
 				contentType:false,
@@ -71,11 +116,12 @@ $(function(){
 					else
 					{
 						$.toast("提交上传失败！！--T_T--"+data.errMsg);
+						alert(data.errMsg);
 					}
 					$('#captcha_img').click();
 				}
 			
 			});
 		});			
-	}
+	
 })

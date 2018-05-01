@@ -86,6 +86,25 @@ public class ImageUtil {
 		String nowTimestr = S_DATE_FORMAT.format(new Date());
 		return nowTimestr+rannum;
 	}
+	
+	public static void deleteFileOrPath(String storePath)
+	{
+		File fileOrPath = new File(PathUtil.getImgBasePath()+storePath);
+		if(fileOrPath.exists())
+		{
+			//如果判断为文件路径
+			if(fileOrPath.isDirectory())
+			{
+				File files[] = fileOrPath.listFiles();
+				for(int i=0;i<files.length;i++)
+				{
+					files[i].delete();
+				}
+			}
+			fileOrPath.delete();
+		}
+	
+	}
 	public static void main(String[] args) {
 		
 		

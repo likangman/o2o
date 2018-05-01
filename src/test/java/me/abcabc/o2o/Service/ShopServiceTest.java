@@ -1,6 +1,7 @@
 package me.abcabc.o2o.Service;
 
 import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.fileUpload;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -21,12 +22,31 @@ import me.abcabc.o2o.entity.ShopCategory;
 import me.abcabc.o2o.enums.ShopStateEnum;
 import me.abcabc.o2o.service.ShopService;
 
-
 public class ShopServiceTest extends BaseTest {
 
 	@Autowired
 	ShopService shopService;
 	@Test 
+	public void testGetShopList()
+	{
+		Shop shopCondition = new Shop();
+		ShopCategory sCategory = new ShopCategory();
+		sCategory.setShopCategoryId(1L);
+		shopCondition.setShopCategory(sCategory);
+		ShopExcution sExcution = shopService.getShopList(shopCondition, 0, 1);
+	}
+	
+	public void testModifyShop()throws Exception
+	{
+		Shop shop = new Shop();
+		shop.setShopId(1L);
+		shop.setShopName("修改电批后的名称");
+		File shopImg = new File("F:/images/son.jpg");
+		InputStream iStream  = new FileInputStream(shopImg);
+		ShopExcution shopExcution  = shopService.modifyShop(shop, iStream, "son.jpg");
+		System.out.println("新的图片地址："+shopExcution.getShop().getShopImg());
+	}
+	
 	public void shopServiceTest() throws FileNotFoundException
 	{
 		Shop shop = new Shop();

@@ -1,12 +1,11 @@
 package me.abcabc.o2o.dao;
 
 import static org.junit.Assert.assertEquals;
-
 import java.util.Date;
-
+import java.util.List;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-
 import me.abcabc.o2o.BaseTest;
 import me.abcabc.o2o.entity.Area;
 import me.abcabc.o2o.entity.PersonInfo;
@@ -17,7 +16,33 @@ public class ShopDaoTest extends BaseTest{
 
 	@Autowired
 	ShopDao shopDao;
-	//@Test
+	
+	@Test
+	public void testQueryShopListAndCount()
+	{
+		Shop shopCondition = new Shop();
+//		PersonInfo owner = new PersonInfo();
+//		owner.setUserId(3L);
+//		shopCondition.setOwner(owner);
+		ShopCategory shopCategory = new ShopCategory();
+		shopCategory.setShopCategoryId(2L);
+		shopCondition.setShopCategory(shopCategory);
+		List<Shop> shopList = shopDao.queryShopList(shopCondition, 0, 5);
+		int count = shopDao.queryShopCount(shopCondition);
+		System.out.println("店铺总数"+count);
+		System.out.println("店铺列表大小"+shopList.size());
+	}
+	
+	public void testQueryByShopId() {
+		long shopId=1;
+		Shop shop = shopDao.queryByShopId(shopId);
+		System.out.println(shop.getArea().getAreaName());
+		System.out.println(shop.getShopCategory().getShopCategoryId());
+
+	}
+	
+	@Test
+	@Ignore
 	public void testInsertShop()
 	{
 		Shop shop = new Shop();
@@ -41,7 +66,9 @@ public class ShopDaoTest extends BaseTest{
 		int e = shopDao.insertShop(shop);
 		assertEquals(1, e);
 	}
+	
 	@Test
+	@Ignore
 	public void testUpdateShop()
 	{
 		Shop shop = new Shop();
